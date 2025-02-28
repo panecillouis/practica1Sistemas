@@ -42,8 +42,18 @@ def crear_tablas():
         FOREIGN KEY (cliente_id) REFERENCES Clientes(id_cliente)
     )
     ''')
-        
-    # Crear las demás tablas (Tickets, Empleados, Contactos) como en el ejemplo anterior
+    cursor.execute('''
+    CREATE TABLE IF NOT EXISTS Contactos_Empleados_Tickets (
+        id_contacto INTEGER PRIMARY KEY AUTOINCREMENT,
+        id_ticket INTEGER,
+        id_empleado INTEGER,
+        fecha_contacto TEXT,
+        tiempo_trabajado REAL,
+        FOREIGN KEY (id_ticket) REFERENCES Tickets(id_ticket),
+        FOREIGN KEY (id_empleado) REFERENCES Empleados(id_empleado)
+    )
+    ''')
+
 
     conn.commit()
     conn.close()
@@ -76,8 +86,10 @@ def insertar_ticket(cliente_id, fecha_apertura, fecha_cierre, es_mantenimiento, 
     INSERT INTO Tickets (cliente_id, fecha_apertura, fecha_cierre, es_mantenimiento, satisfaccion_cliente, tipo_incidencia)
     VALUES (?, ?, ?, ?, ?, ?)
     ''', (cliente_id, fecha_apertura, fecha_cierre, es_mantenimiento, satisfaccion_cliente, tipo_incidencia))
+    id_ticket = cursor.lastrowid  # Obtener el ID del ticket recién insertado
     conn.commit()
     conn.close()
+    return id_ticket
 def insertar_empleado(id_empleado, nombre, nivel, fecha_contrato):
     conn = sqlite3.connect('sistema_etl.db')
     cursor = conn.cursor()
@@ -87,5 +99,13 @@ def insertar_empleado(id_empleado, nombre, nivel, fecha_contrato):
     ''', (id_empleado, nombre, nivel, fecha_contrato))
     conn.commit()
     conn.close()
+def insertar_contacto_empleado(id_ticket, id_empleado, fecha_contacto, tiempo_trabajado):
+    conn = sqlite3.connect('sistema_etl.db')
+    cursor = conn.cursor()
+    cursor.execute('''
+    INSERT INTO Contactos_Empleados_Tickets (id_ticket, id_empleado, fecha_contacto, tiempo_trabajado)
+    VALUES (?, ?, ?, ?)
+    ''', (id_ticket, id_empleado, fecha_contacto, tiempo_trabajado))
+    conn.commit()
+    conn.close()
 
-# Otras funciones de inserción relacionadas con Tickets, Empleados, y Contactos

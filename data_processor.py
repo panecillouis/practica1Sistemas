@@ -1,6 +1,6 @@
 import sqlite3
 import pandas as pd
-
+import math
 def obtener_datos():
     conn = sqlite3.connect('sistema_etl.db')
     query = '''

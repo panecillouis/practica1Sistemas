@@ -1,7 +1,6 @@
-from db import crear_tablas, insertar_cliente, insertar_ticket, insertar_tipo_incidente, insertar_empleado
+from db import crear_tablas, insertar_cliente, insertar_ticket, insertar_tipo_incidente, insertar_empleado, insertar_contacto_empleado
 from json_loader import cargar_datos_json
 from data_processor import obtener_datos
-
 def main():
     # Crear tablas si no existen
     crear_tablas()
@@ -9,11 +8,18 @@ def main():
     # Cargar los datos del archivo JSON
     data = cargar_datos_json()
 
+    
+    for ticket in data['tickets_emitidos']:  # Itera sobre la lista de tickets
+        id_ticket = insertar_ticket(ticket['cliente'], ticket['fecha_apertura'], 
+                                ticket['fecha_cierre'], ticket['es_mantenimiento'], 
+                                ticket['satisfaccion_cliente'], ticket['tipo_incidencia'])
+    
+        # Verificar si el ticket tiene contactos con empleados
+        if 'contactos_con_empleados' in ticket:
+            for contacto in ticket['contactos_con_empleados']:
+                insertar_contacto_empleado(id_ticket, contacto['id_emp'], contacto['fecha'], contacto['tiempo'])
 
-     # Insertar los datos en la base de datos   
-    for ticket in data["tickets_emitidos"]:
-        insertar_ticket(ticket["cliente"], ticket["fecha_apertura"], ticket["fecha_cierre"],
-                    ticket["es_mantenimiento"], ticket["satisfaccion_cliente"], ticket["tipo_incidencia"])
+    
     for cliente in data["clientes"]:
         insertar_cliente(cliente["id_cli"], cliente["nombre"], cliente["telefono"], cliente["provincia"])
 
