@@ -1,6 +1,7 @@
 from db import crear_tablas, insertar_cliente, insertar_ticket, insertar_tipo_incidente, insertar_empleado, insertar_contacto_empleado
 from json_loader import cargar_datos_json
-from data_processor import obtener_datos_generico, obtener_datos_agrupacion
+from data_processor import * 
+import graficos
 def main():
     # Crear tablas si no existen
     crear_tablas()
@@ -41,6 +42,14 @@ def main():
     for tipo in df_agrupados:
         print(f"\nDe tipo {tipo}:\n")
         print(df_agrupados[tipo])
+    
+    df_mantenimiento = obtener_datos_mantenimiento()
+    #se realizand los graficos
+    graficos.graficar_media_duracion(df_mantenimiento)
+    graficos.grafico_boxplot_incidente(df_agrupados)
+    graficos.mostrar_clientes_criticos(df_agrupados)
+    graficos.mostrar_empleados_actuaciones(df_agrupados)
+    graficos.mostrar_actuaciones_por_dia(df_agrupados)
 
 
 if __name__ == "__main__":

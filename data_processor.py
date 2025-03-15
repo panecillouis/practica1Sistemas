@@ -95,6 +95,7 @@ def obtener_datos_agrupacion():
             ce.tiempo_trabajado,
             e.nivel,
             c.nombre_cliente,
+            t.fecha_cierre, 
             t.fecha_apertura,
             t.tipo_incidencia
      FROM 
@@ -112,7 +113,7 @@ def obtener_datos_agrupacion():
 
     df = pd.read_sql(query, conn)
     conn.close()
-    tipo = ['nombre', 'nivel', 'nombre_cliente', 'tipo_incidencia', 'fecha_apertura']
+    tipo = ['nombre', 'nivel', 'nombre_cliente', 'tipo_incidencia', 'fecha_apertura','fecha_cierre']
     agrupacion = {}
     for t in tipo:
        agrupacion_tipo = df.groupby(t).agg(
@@ -123,8 +124,32 @@ def obtener_datos_agrupacion():
               varianza=('tiempo_trabajado', 'var'),
               max=('tiempo_trabajado', 'max'),
               min=('tiempo_trabajado', 'min')
-       )
+       ).reset_index()
        agrupacion[t] = agrupacion_tipo
     return agrupacion
 
 
+def obtener_datos_mantenimiento():
+    conn = sqlite3.connect('sistema_etl.db')
+
+    # Consulta SQL para obtener la cantidad de incidentes y la duración calculada (diferencia entre fecha_cierre y fecha_apertura)
+    query = """
+    SELECT 
+        t.es_mantenimiento,
+        COUNT(t.id_ticket) AS num_incidencias,
+        AVG(JULIANDAY(t.fecha_cierre) - JULIANDAY(t.fecha_apertura)) AS avg_duracion
+    FROM 
+        Tickets t
+    JOIN 
+        Contactos_Empleados_Tickets ce ON t.id_ticket = ce.id_ticket
+    GROUP BY 
+        t.es_mantenimiento;
+    """
+
+    df = pd.read_sql(query, conn)
+    conn.close()
+
+    # Cambiar los valores de es_mantenimiento a etiquetas legibles
+    df['es_mantenimiento'] = df['es_mantenimiento'].map({0: 'No Mantenimiento', 1: 'Mantenimiento'})
+
+    return df

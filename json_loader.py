@@ -1,5 +1,5 @@
 import json
-
+#se carga los datos del archivo json
 def cargar_datos_json():
     with open('datos.json', 'r') as file:
         data = json.load(file)
