@@ -4,9 +4,10 @@ import numpy as np
 from datetime import datetime
 import seaborn as sns
 
-def graficar_media_duracion(df): 
+def graficar_media_duracion(df, return_fig=False): 
     # Crear el gráfico de barras
-    plt.figure(figsize=(8, 6))
+    
+    fig = plt.figure(figsize=(8, 6))
     plt.bar(df['es_mantenimiento'], df['avg_duracion'], color=['skyblue', 'orange'])
 
     # Etiquetas y título
@@ -15,11 +16,16 @@ def graficar_media_duracion(df):
     plt.title('Media de Duración de Incidencias de Mantenimiento vs No Mantenimiento')
 
     # Mostrar el gráfico
-    #plt.show()
-    plt.savefig('graficar_media_duracion.png')
+    if return_fig:
+        return fig
+    else:
+        # Mostrar o guardar el gráfico
+        plt.savefig('graficar_media_duracion.png')
+        plt.close(fig)
 
 
-def grafico_boxplot_incidente(df_agrupados):
+
+def grafico_boxplot_incidente(df_agrupados, return_fig=False):
 
     # Asegurarse de que los datos agrupados contengan la columna de tiempos de resolución
     if 'mediana' not in df_agrupados['tipo_incidencia'].columns:
@@ -29,7 +35,7 @@ def grafico_boxplot_incidente(df_agrupados):
     df = df_agrupados['tipo_incidencia']
     
     # Configurar el gráfico
-    plt.figure(figsize=(10, 6))
+    fig = plt.figure(figsize=(10, 6))
     
     # Dibujar el boxplot usando seaborn
     sns.boxplot(x=df.index, y=df['mediana'], palette='Set2')
@@ -48,11 +54,14 @@ def grafico_boxplot_incidente(df_agrupados):
     plt.ylabel('Tiempo de Resolución (horas)')
     plt.legend()
     
-    # Mostrar el gráfico
-    #plt.show()
-    plt.savefig('grafico_boxplot_incidente.png')
+    if return_fig:
+        return fig
+    else:
+        # Mostrar o guardar el gráfico
+        plt.savefig('grafico_boxplot_incidente.png')
+        plt.close(fig)
 
-def mostrar_clientes_criticos(df_agrupados):
+def mostrar_clientes_criticos(df_agrupados, return_fig=False):
     # Agrupar por 'nombre_cliente' y sumar las incidencias
     df_clientes = df_agrupados['nombre']
     
@@ -68,16 +77,22 @@ def mostrar_clientes_criticos(df_agrupados):
     incidencias = top_5_clientes['num_incidencias']
         
     # Crear la gráfica de barras
-    plt.figure(figsize=(10, 5))
+    fig = plt.figure(figsize=(10, 5))
     plt.barh(clientes, incidencias, color='skyblue')
     plt.xlabel('Número de Incidencias')
     plt.ylabel('Cliente')
     plt.title('Top 5 Clientes con Más Incidencias')
     plt.gca().invert_yaxis()  # Para que el cliente con más incidencias esté en la parte superior
-    #plt.show()
-    plt.savefig('mostrar_clientes_criticos.png')
+  
+    
+    if return_fig:
+        return fig
+    else:
+        # Mostrar o guardar el gráfico
+        plt.savefig('mostrar_clientes_criticos.png')
+        plt.close(fig)
 
-def mostrar_empleados_actuaciones(df_agrupados):
+def mostrar_empleados_actuaciones(df_agrupados, return_fig=False):
     # Extraer los datos necesarios
     df_empleados = df_agrupados['nombre']
     
@@ -89,16 +104,20 @@ def mostrar_empleados_actuaciones(df_agrupados):
     actuaciones = df_empleados_sorted['num_contactos']
     
     # Crear la gráfica de barras
-    plt.figure(figsize=(10, 5))
+    fig = plt.figure(figsize=(10, 5))
     plt.bar(empleados, actuaciones, color='lightcoral')
     plt.xlabel('Empleado')
     plt.ylabel('Número de Actuaciones')
     plt.title('Número de Actuaciones por Empleado')
     plt.xticks(rotation=45)
-    #plt.show()
-    plt.savefig('mostrar_empleados_actuaciones.png')
+    if return_fig:
+        return fig
+    else:
+        # Mostrar o guardar el gráfico
+        plt.savefig('mostrar_empleados_actuaciones.png')
+        plt.close(fig)
 
-def mostrar_actuaciones_por_dia(df_agrupados):
+def mostrar_actuaciones_por_dia(df_agrupados, return_fig=False):
 
     # Asegurarse de que la columna de fecha está en formato datetime
     df_agrupados_fecha_cierre = pd.to_datetime(df_agrupados['fecha_cierre']['fecha_cierre'], format="%Y-%m-%d", errors='coerce')
@@ -132,11 +151,15 @@ def mostrar_actuaciones_por_dia(df_agrupados):
     resultados_ordenados = {dia: resultados[dia] for dia in orden_dias if dia in resultados}
 
     # Crear la gráfica de barras
-    plt.figure(figsize=(10, 6))
+    fig = plt.figure(figsize=(10, 6))
     plt.bar(resultados_ordenados.keys(), resultados_ordenados.values(), color='lightgreen')
     plt.xlabel('Día de la Semana')
     plt.ylabel('Número de Actuaciones')
     plt.title('Total de Actuaciones por Día de la Semana')
     plt.xticks(rotation=45)  # Rotar las etiquetas del eje x para mejor visualización
-    #plt.show()
-    plt.savefig('mostrar_actuaciones_por_dia.png')
+    if return_fig:
+        return fig
+    else:
+        # Mostrar o guardar el gráfico
+        plt.savefig('mostrar_actuaciones_por_dia.png')
+        plt.close(fig)

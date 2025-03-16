@@ -1,0 +1,51 @@
+{% extends "base.html" %} {% block content %}
+<section class="informe">
+  <h2>Media de Tiempo de Incidentes por Tipo</h2>
+  <div class="grafico">
+    <img
+      src="data:image/png;base64,{{ img_media_duracion }}"
+      alt="Media de tiempo de incidentes"
+    />
+  </div>
+</section>
+
+<section class="informe">
+  <h2>Distribución de Tiempos de Resolución (Boxplot)</h2>
+  <div class="grafico">
+    <img
+      src="data:image/png;base64,{{ img_boxplot }}"
+      alt="Boxplot de tiempos de resolución"
+    />
+  </div>
+</section>
+
+<section class="informe">
+  <h2>Clientes Críticos</h2>
+  <div class="grafico">
+    <img
+      src="data:image/png;base64,{{ img_clientes_criticos }}"
+      alt="Clientes críticos"
+    />
+  </div>
+</section>
+
+<section class="informe">
+  <h2>Actuaciones por Empleado</h2>
+  <div class="grafico">
+    <img
+      src="data:image/png;base64,{{ img_actuaciones_empleados }}"
+      alt="Actuaciones por empleado"
+    />
+  </div>
+</section>
+
+<section class="informe">
+  <h2>Actuaciones por Día de la Semana</h2>
+  <div class="grafico">
+    <img
+      src="data:image/png;base64,{{ img_actuaciones_dia }}"
+      alt="Actuaciones por día"
+    />
+  </div>
+</section>
+{% endblock %}

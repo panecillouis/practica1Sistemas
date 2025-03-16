@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}Bienvenido al Sistema MIS{% endblock %}
+
+{% block content %}
+<section class="intro">
+    <h2>Bienvenido al Sistema MIS</h2>
+    <p>Este sistema proporciona análisis de datos y informes para el departamento de Seguridad (SOC).</p>
+    <p>Utiliza los datos de incidencias de seguridad para generar informes útiles para la toma de decisiones.</p>
+    
+    <div class="menu-buttons">
+        <a href="/estadisticas" class="btn">Ver Estadísticas</a>
+        <a href="/agrupaciones" class="btn">Ver Agrupaciones</a>
+        <a href="/graficos" class="btn">Ver Gráficos</a>
+    </div>
+</section>
+{% endblock %}

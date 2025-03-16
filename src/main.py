@@ -44,7 +44,7 @@ def main():
         print(df_agrupados[tipo])
     
     df_mantenimiento = obtener_datos_mantenimiento()
-    #se realizand los graficos
+    #se realizan los graficos
     graficos.graficar_media_duracion(df_mantenimiento)
     graficos.grafico_boxplot_incidente(df_agrupados)
     graficos.mostrar_clientes_criticos(df_agrupados)

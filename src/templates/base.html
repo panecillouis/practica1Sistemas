@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Sistema MIS - SOC{% endblock %}</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <link rel="icon" type="image/jpg" href="/static/favicon.jpg">
+</head>
+<body>
+    <header>
+        <h1>Sistema de Información Gerencial para SOC</h1>
+        <nav>
+            <ul>
+                <li><a href="/">Inicio</a></li>
+                <li><a href="/estadisticas">Estadísticas</a></li>
+                <li><a href="/agrupaciones">Agrupaciones</a></li>
+                <li><a href="/graficos">Gráficos</a></li>
+                <li><a href="/inicializar">Inicializar DB</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+    
+    <footer>
+        <p>Práctica 1 - Sistemas de Información para la Gestión Empresarial - 2024-2025</p>
+    </footer>
+</body>
+</html>
